@@ -1,3 +1,24 @@
+# better approach
+# using sets and string encoding
+# Collect the set of things we see, encoded as strings. For example:
+# '4' in row 7 is encoded as "(4)7".
+# '4' in column 7 is encoded as "7(4)".
+# '4' in the top-right block is encoded as "0(4)2".
+# Scream false if we ever fail to add something because it was already added (i.e., seen before).
+class Solution:
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        check = set()
+        for i in range(9):
+            for j in range(9):
+                if board[i][j] != '.':
+                    if '(' + str(board[i][j]) + ')' + str(i) in check or str(j) + '(' + str(board[i][j]) + ')' in check or str(i//3) + '(' + str(board[i][j]) + ')' + str(j//3) in check:
+                        return False
+                    else:
+                        check.add('(' + str(board[i][j]) + ')' + str(i))
+                        check.add(str(j) + '(' + str(board[i][j]) + ')')
+                        check.add(str(i//3) + '(' + str(board[i][j]) + ')' + str(j//3))
+        return True
+
 # first approach
 class Solution:
     def isValidSudoku(self, board: List[List[str]]) -> bool:
